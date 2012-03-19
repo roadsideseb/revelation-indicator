@@ -27,7 +27,6 @@ from distutils.command.install_data import install_data
 
 from DistUtilsExtra.command import *
 
-import revelation_indicator
 
 class post_install(install_data):
 
@@ -58,10 +57,10 @@ setup(
     version = '0.1.0',
     author = 'Sebastian Vetter',
     author_email = 'sebastian@roadside-developer.com',
-    #url = '',
+    url = 'https://github.com/elbaschid/revelation-indicator',
 
-    description = '',
-    long_description = revelation_indicator.__doc__,
+    description = 'Indicator for the revelation password manager on Unity desktop.',
+    long_description = open('README.rst').read(),
     license = 'GNU General Public License (GPL)',
 
     scripts = ['bin/revelation-indicator'],
@@ -75,10 +74,15 @@ setup(
     classifiers = [
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Intended Audience :: Developers',
+        'Intended Audience :: End Users/Desktop',
         'Natural Language :: English',
-        'Operating System :: Linux',
+        'Operating System :: POSIX :: Linux',
+        'Environment :: X11 Applications :: GTK',
+        'Environment :: X11 Applications :: Gnome',
         'Programming Language :: Python',
+        'Topic :: Utilities',
+        'Topic :: Security :: Cryptography',
+        'Topic :: Desktop Environment :: Gnome',
     ],
     cmdclass = { 
         "build" : build_extra.build_extra,
@@ -88,4 +92,3 @@ setup(
         "build_icons" :  build_icons.build_icons
     },
 )
-
