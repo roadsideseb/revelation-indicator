@@ -2,18 +2,18 @@ Revelation Indicator
 ====================
 
 This small application is a re-write of the revelation-applet to work in
-Ubuntu's new [Unity](http://unity.ubuntu.com) desktop. It implements an
+Ubuntu's new `Unity <http://unity.ubuntu.com>`_ desktop. It implements an
 indicator application that allows easy read-only access to your revelation
 account database.
 
 Installation
 ============
 
-To install the indicator just run:
+To install the indicator just run::
 
     $ sudo python setup.py install
 
-After that you can start it by running:
+After that you can start it by running::
 
     $ revelation-indicator
 
