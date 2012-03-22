@@ -70,7 +70,7 @@ schema_files = glob.glob('data/gconf/*.schemas')
 
 setup(
     name = 'revelation-indicator',
-    version = '0.1.0',
+    version = '0.1.1',
     author = 'Sebastian Vetter',
     author_email = 'sebastian@roadside-developer.com',
     url = 'https://github.com/elbaschid/revelation-indicator',
