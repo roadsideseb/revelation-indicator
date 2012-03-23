@@ -1,0 +1,11 @@
+
+- 0.1.2
+    * Fixed including README.rst
+    * Added changelog
+    * Included LICENSE & MANIFEST.in
+
+- 0.1.1
+    * removed dependency to DistUtilsExtra
+
+- 0.1.0
+    * initial setup of the project
