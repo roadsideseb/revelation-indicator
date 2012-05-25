@@ -117,10 +117,14 @@ class RevelationIndicator(object):
         #self.items = ui.ItemFactory(self.applet)
         self.locktimer = data.Timer()
 
-        self.config.monitor(
-            "autolock_timeout",
-            lambda k,v,d: self.locktimer.start(v * 60)
-        )
+        def timeout_callback(key, value, userdata):
+            """
+            Defining timeout callback for locking.
+            """
+            if value:
+                self.locktimer.start(v*60)
+
+        self.config.monitor("autolock_timeout", timeout_callback)
         self.config.monitor("file", self.__cb_config_file)
 
         self.datafile.connect("changed", self.__cb_file_changed)
