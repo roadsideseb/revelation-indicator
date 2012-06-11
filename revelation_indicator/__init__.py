@@ -76,13 +76,13 @@ class RevelationIndicator(object):
 
         self.ind = appindicator.Indicator(
             "revelation-indicator",
-            "revelation-indicator-locked", #defines icon
+            "revelation-indicator-locked",  # defines icon
             appindicator.CATEGORY_APPLICATION_STATUS
         )
 
         self.ind.set_status(appindicator.STATUS_ACTIVE)
 
-        sys.excepthook	= self.__cb_exception
+        sys.excepthook = self.__cb_exception
 
         gettext.bindtextdomain(config.PACKAGE, config.DIR_LOCALE)
         gettext.bind_textdomain_codeset(config.PACKAGE, "UTF-8")
@@ -107,7 +107,6 @@ class RevelationIndicator(object):
 
         ##FIXME: use a better way to set the filename
 
-
     def __init_facilities(self):
         "Sets up facilities"
 
@@ -128,9 +127,11 @@ class RevelationIndicator(object):
         self.config.monitor("file", self.__cb_config_file)
 
         self.datafile.connect("changed", self.__cb_file_changed)
-        self.datafile.connect("content-changed", self.__cb_file_content_changed)
+        self.datafile.connect(
+            "content-changed",
+            self.__cb_file_content_changed
+        )
         self.locktimer.connect("ring", self.__cb_file_autolock)
-
 
     def __init_ui(self):
         self.menu = gtk.Menu()
@@ -143,20 +144,20 @@ class RevelationIndicator(object):
         self.unlock_item.show()
         self.unlock_item.connect(
             'activate',
-            lambda w,d=None: self.file_open(self.config.get("file"))
+            lambda w, d=None: self.file_open(self.config.get("file"))
         )
 
         self.lock_item = gtk.MenuItem(_('Lock File'))
         self.lock_item.connect(
             'activate',
-            lambda w,d=None: self.file_close()
+            lambda w, d=None: self.file_close()
         )
 
         self.prefs_item = gtk.MenuItem(_('Preferences'))
         self.prefs_item.show()
         self.prefs_item.connect(
             'activate',
-            lambda w,d=None: self.prefs()
+            lambda w, d=None: self.prefs()
         )
 
         self.about_item = gtk.MenuItem(_('About'))
@@ -180,17 +181,16 @@ class RevelationIndicator(object):
         #self.menu.show_all()
 
         gtk.about_dialog_set_url_hook(
-            lambda d,l: gtk.show_uri(None, l, gtk.get_current_event_time())
+            lambda d, l: gtk.show_uri(None, l, gtk.get_current_event_time())
         )
 
-	gtk.about_dialog_set_email_hook(
-            lambda d,l: gtk.show_uri(None, "mailto:" + l, gtk.get_current_event_time())
+        gtk.about_dialog_set_email_hook(
+            lambda d, l: gtk.show_uri(None, "mailto:" + l, gtk.get_current_event_time())
         )
 
         ## set up various ui element holders
-        self.popup_entryview	= None
-        self.popup_entrylist	= None
-
+        self.popup_entryview = None
+        self.popup_entrylist = None
 
     def file_close(self):
         logger.debug(_("closing unlocked database file."))
@@ -211,7 +211,7 @@ class RevelationIndicator(object):
         self.unlock_item.show()
         self.lock_item.hide()
 
-    def file_open(self, file, password = None):
+    def file_open(self, file, password=None):
         logger.debug(_("opening database file."))
         try:
 
@@ -229,7 +229,7 @@ class RevelationIndicator(object):
         except datahandler.FormatError:
             dialog.Error(None, _('Invalid file format'), _('The file \'%s\' contains invalid data.') % file).run()
 
-        except ( datahandler.DataError, entry.EntryTypeError, entry.EntryFieldError ):
+        except (datahandler.DataError, entry.EntryTypeError, entry.EntryFieldError):
             dialog.Error(
                 None,
                 _('Unknown data'),
@@ -266,10 +266,8 @@ class RevelationIndicator(object):
 
         return False
 
-
     def prefs(self):
         dialog.run_unique(Preferences, None, self.config)
-
 
     def __cb_config_file(self, key, value, data):
             "Config callback for file key changes"
@@ -281,15 +279,13 @@ class RevelationIndicator(object):
 
             pass
 
-
-    def __cb_file_autolock(self, widget, data = None):
+    def __cb_file_autolock(self, widget, data=None):
         "Callback for autolocking the file"
 
-        if self.config.get("autolock") == True:
+        if self.config.get("autolock"):
             self.file_close()
 
-
-    def __cb_file_content_changed(self, widget, data = None):
+    def __cb_file_content_changed(self, widget, data=None):
         "Callback for changed file content"
 
         try:
@@ -304,8 +300,7 @@ class RevelationIndicator(object):
         except datahandler.Error:
             pass
 
-
-    def __cb_file_changed(self, widget, data = None):
+    def __cb_file_changed(self, widget, data=None):
         "Callback for changed data file"
         logger.debug('file has been changed')
 
@@ -326,8 +321,7 @@ class RevelationIndicator(object):
 
         #        self.icon.set_from_stock(ui.STOCK_REVELATION, ui.ICON_SIZE_APPLET)
 
-
-    def __cb_popup_activate(self, widget, data = None):
+    def __cb_popup_activate(self, widget, data=None):
         self.locktimer.reset()
 
         #action = self.config.get("menuaction")
@@ -344,13 +338,12 @@ class RevelationIndicator(object):
         #else:
         #    self.entry_show(data)
 
-
-    def entry_show(self, e, focusafter = False):
+    def entry_show(self, e, focusafter=False):
         self.__close_popups()
 
         self.popup_entryview = EntryViewPopup(e, self.config, self.clipboard)
 
-        if focusafter == True:
+        if focusafter:
             self.popup_entryview.connect("closed", lambda w: self.__focus_entry())
 
         def cb_goto(widget):
@@ -371,20 +364,19 @@ class RevelationIndicator(object):
 
         self.locktimer.reset()
 
-        if hasattr(self, "popup_entryview") == True and self.popup_entryview != None:
+        if hasattr(self, "popup_entryview") and self.popup_entryview is not None:
             self.popup_entryview.destroy()
 
-        if hasattr(self, "popup_entrylist") == True and self.popup_entrylist != None:
+        if hasattr(self, "popup_entrylist") and self.popup_entrylist is not None:
             self.popup_entrylist.destroy()
 
-
-    def __file_load(self, filename, password = None):
+    def __file_load(self, filename, password=None):
 
         if not filename:
             logger.debug("no revelation database provided")
             return False
 
-        if dialog.present_unique(dialog.PasswordOpen) == True:
+        if dialog.present_unique(dialog.PasswordOpen):
             logger.debug('password dialog already opened')
             return False
 
@@ -418,7 +410,7 @@ class RevelationIndicator(object):
         ##self.applet.request_focus(long(0))
         pass
 
-    def __generate_entrymenu(self, entrystore, parent = None):
+    def __generate_entrymenu(self, entrystore, parent=None):
         menu = gtk.Menu()
 
         for i in range(entrystore.iter_n_children(parent)):
@@ -426,7 +418,7 @@ class RevelationIndicator(object):
 
             e = entrystore.get_entry(iter)
             item = ui.ImageMenuItem(type(e) == entry.FolderEntry and ui.STOCK_FOLDER or e.icon, e.name)
-            item.connect("select", lambda w,d=None: self.locktimer.reset())
+            item.connect("select", lambda w, d=None: self.locktimer.reset())
 
             if type(e) == entry.FolderEntry:
                 item.set_submenu(self.__generate_entrymenu(entrystore, iter))
@@ -437,11 +429,10 @@ class RevelationIndicator(object):
 
         return menu
 
-
     def __get_launcher(self, e):
         command = self.config.get("/apps/revelation/launcher/%s" % e.id)
 
-        if command in ( "", None ):
+        if command in ("", None):
             return None
 
         subst = {}
@@ -464,10 +455,10 @@ class RevelationIndicator(object):
 
             return command != None
 
-        except ( util.SubstFormatError ):
+        except (util.SubstFormatError):
             return True
 
-        except ( util.SubstValueError, config.ConfigError ):
+        except (util.SubstValueError, config.ConfigError):
             return False
 
     def __require_file(self):
@@ -480,9 +471,8 @@ class RevelationIndicator(object):
         d = dialog.Info(
             None, _('File not selected'),
             _('You must select a Revelation data file to use - this can be done in the applet preferences.'),
-            ( ( gtk.STOCK_PREFERENCES, gtk.RESPONSE_ACCEPT ), ( gtk.STOCK_OK, gtk.RESPONSE_OK ) )
+            ((gtk.STOCK_PREFERENCES, gtk.RESPONSE_ACCEPT), (gtk.STOCK_OK, gtk.RESPONSE_OK))
         )
-
 
         if d.run() == gtk.RESPONSE_ACCEPT:
             self.prefs()
@@ -506,7 +496,7 @@ class RevelationIndicator(object):
         traceback = util.trace_exception(type, value, trace)
         sys.stderr.write(traceback)
 
-        if dialog.Exception(None, traceback).run() == True:
+        if dialog.Exception(None, traceback).run():
             gtk.main()
         else:
             sys.exit(1)
@@ -527,8 +517,7 @@ class Preferences(dialog.Utility):
         #self.__init_section_menuaction(self.page_general)
         #self.__init_section_misc(self.page_general)
 
-        self.connect("response", lambda w,d: self.destroy())
-
+        self.connect("response", lambda w, d: self.destroy())
 
     def __init_section_file(self, page):
         self.section_file = page.add_section(_('File Handling'))
@@ -613,7 +602,6 @@ class Preferences(dialog.Utility):
 
     #    self.check_chain_username.set_tooltip_text(_('When the password is copied to clipboard, put the username before the password as a clipboard "chain"'))
     #    self.section_misc.append_widget(None, self.check_chain_username)
-
 
     def run(self):
             self.show_all()
