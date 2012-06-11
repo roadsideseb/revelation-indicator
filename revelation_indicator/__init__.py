@@ -122,7 +122,7 @@ class RevelationIndicator(object):
             Defining timeout callback for locking.
             """
             if value:
-                self.locktimer.start(v*60)
+                self.locktimer.start(value * 60)
 
         self.config.monitor("autolock_timeout", timeout_callback)
         self.config.monitor("file", self.__cb_config_file)
