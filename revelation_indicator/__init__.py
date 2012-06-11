@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__version__ = "0.1.5"
+
 import os
 import sys
 import gconf
@@ -483,7 +485,7 @@ class RevelationIndicator(object):
         dialog = gtk.AboutDialog()
         dialog.set_name(_('Revelation Indicator'))
         dialog.set_comments(_('An indicator applet to browse a Revelation database'))
-        dialog.set_version("0.1")
+        dialog.set_version(__version__)
         dialog.set_copyright("(c) Sebastian Vetter")
         dialog.run()
         dialog.destroy()

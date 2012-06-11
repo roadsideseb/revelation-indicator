@@ -25,6 +25,8 @@ import subprocess
 from distutils.core import setup
 from distutils.command.install_data import install_data
 
+from revelation_indicator import __version__
+
 
 class post_install(install_data):
 
@@ -45,7 +47,7 @@ class post_install(install_data):
                     "--makefile-install-rule",
                     sys.prefix+'/share/gconf/schemas/'+schema_file
                 ])
-                output = subprocess.check_output(cmd, shell=True)
+                subprocess.check_output(cmd, shell=True)
 
 
 def get_icons(icon_dir):
@@ -70,7 +72,7 @@ schema_files = glob.glob('data/gconf/*.schemas')
 
 setup(
     name = 'revelation-indicator',
-    version = '0.1.4',
+    version = __version__,
     author = 'Sebastian Vetter',
     author_email = 'sebastian@roadside-developer.com',
     url = 'https://github.com/elbaschid/revelation-indicator',
